@@ -20,8 +20,8 @@ Requirements :
 
 Links :
 * [Download GCC](https://sourceforge.net/projects/mingw-w64/)
-* [Learn opengl](https://learnopengl.com/Getting-started/Hello-Triangle)
 * [Khronos wiki for creating an OpenGl context in win32](https://www.khronos.org/opengl/wiki/Creating_an_OpenGL_Context_(WGL))
+* [Learn opengl](https://learnopengl.com/Getting-started/Hello-Triangle)
 
 References
 * [Triangle from scratch in Rust](https://rust-tutorials.github.io/triangle-from-scratch/)
