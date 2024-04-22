@@ -14,14 +14,18 @@ Included files :
   * requires no dependency outside the operating system.
 
 Requirements :
-* A Windows operating system, like Windows 10.
+* A Windows operating system, like Windows 10 or 11.
 * Any C compiler, but GCC is required to use the included run file.
 * Experience in at least another typed programming language.
 
 Links :
-* Download GCC https://sourceforge.net/projects/mingw-w64/
-* Learn opengl https://learnopengl.com/Getting-started/Hello-Triangle
+* [Download GCC](https://sourceforge.net/projects/mingw-w64/)
+* [Learn opengl](https://learnopengl.com/Getting-started/Hello-Triangle)
+* [Khronos wiki for creating an OpenGl context in win32](https://www.khronos.org/opengl/wiki/Creating_an_OpenGL_Context_(WGL))
 
 References
-* Learn opengl Hello triangle source code https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.1.hello_triangle/hello_triangle.cpp
-* Triangle from scratch in Rust https://rust-tutorials.github.io/triangle-from-scratch/
+* [Triangle from scratch in Rust](https://rust-tutorials.github.io/triangle-from-scratch/)
+* [Learn opengl Hello triangle source code](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.1.hello_triangle/hello_triangle.cpp)
+* [Beluki's cpp version (my favorite)](https://github.com/Beluki/4kGL)
+* [vsbw's cpp version](https://github.com/vbsw/opengl-win32-example/tree/3.0)
+* [Eleobert's cpp version](https://gist.github.com/Eleobert/d4bbf044db7cb5a587666cff5a6f1174)
