@@ -20,6 +20,8 @@ Requirements :
 
 Links :
 * Download GCC https://sourceforge.net/projects/mingw-w64/
-* Continue learning https://learnopengl.com/Getting-started/Hello-Triangle
+* Learn opengl https://learnopengl.com/Getting-started/Hello-Triangle
 
 References
+* Learn opengl Hello triangle source code https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.1.hello_triangle/hello_triangle.cpp
+* Triangle from scratch in Rust https://rust-tutorials.github.io/triangle-from-scratch/
