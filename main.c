@@ -24,10 +24,10 @@ typedef char GLchar;
 typedef long long GLsizeiptr;
 
 // CHOOSE PIXEL FORMAT
-typedef BOOL (*PFNWGLCHOOSEPIXELFORMATARBPROC)(HDC, int*, FLOAT*, UINT, int*, UINT*);
+typedef BOOL (*PFNWGLCHOOSEPIXELFORMATARBPROC)(HDC, INT*, FLOAT*, UINT, INT*, UINT*);
 PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = NULL;
 // CREATE CONTEXT ATTRIBUTES
-typedef HGLRC (*PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC, HGLRC, int*);
+typedef HGLRC (*PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC, HGLRC, INT*);
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 // CREATE SHADER
 typedef GLuint (*PFNGLCREATESHADERPROC)(GLenum);
@@ -127,18 +127,18 @@ PFNGLUSEPROGRAMPROC glUseProgram = NULL;
 
 // 1. SOME VARIABLES
 
+// CLOSE WINDOW
+bool Quit = false;
 // MOUSE POSITION
 int mouse_x, mouse_y = 0;
 // LAST KEY PRESSED
 int keyboard_key = 0;
 // FRAME COUNT
 int frame = 0;
-// QUIT
-bool Quit = false;
 // DEBUG
-void main_fail(char failure[])
+void fail(char failure[])
 {
-	Quit = true;
+  Quit = true;
 	printf(failure);
 }
 
@@ -171,7 +171,7 @@ LRESULT window_procedure(HWND window, UINT message, WPARAM wparam, LPARAM lparam
 	return DefWindowProcA(window, message, wparam, lparam);;
 }
 
-// MAIN
+// MAIN ENTRY POINT
 int main() {
 
 	// 3. CREATE WINDOW AND PROGRAM HANDLES
@@ -186,7 +186,7 @@ int main() {
 		.hCursor = LoadCursor(0, IDC_ARROW),
 		.lpszClassName = "nice_class",
 	};
-	if (!RegisterClass(&window_class)) main_fail("Failed to register nice window.");
+	if (!RegisterClass(&window_class)) fail("Failed to register nice window.");
 	// CREATE NICE WINDOW
 	HWND window = CreateWindowEx(
 		0,
@@ -199,7 +199,7 @@ int main() {
 		instance,
 		0
 	);
-	if (!window) main_fail("Failed to create nice window.");
+	if (!window) fail("Failed to create nice window.");
 	// GET NICE DEVICE CONTEXT
 	HDC context = GetDC(window);
 
@@ -212,7 +212,7 @@ int main() {
 		.hInstance = GetModuleHandle(0),
 		.lpszClassName = "DumbClass",
 	};
-	if (!RegisterClassA(&dumb_class)) { main_fail("Failed to register dumb window class."); }
+	if (!RegisterClassA(&dumb_class)) { fail("Failed to register dumb window class."); }
 	// CREATE DUMB WINDOW
 	HWND dumb_window = CreateWindowExA(
 		0,
@@ -225,7 +225,7 @@ int main() {
 		dumb_class.hInstance,
 		0
 	);
-	if (!dumb_window) { main_fail("Failed to create dumb window."); }
+	if (!dumb_window) { fail("Failed to create dumb window."); }
 	// GET DUMB DEVICE CONTEXT
 	HDC dumb_device = GetDC(dumb_window);
 	// DESCRIBE DUMB PIXEL FORMAT
@@ -241,70 +241,70 @@ int main() {
 		.cStencilBits = 8,
 	};
 	// CHOOSE DUMB PIXEL FORMAT
-	int dumb_format = ChoosePixelFormat(dumb_device, &dumb_pixel_format);
-	if (!dumb_format) { main_fail("Failed to choose dumb pixel format."); }
+	INT dumb_format = ChoosePixelFormat(dumb_device, &dumb_pixel_format);
+	if (!dumb_format) { fail("Failed to choose dumb pixel format."); }
 	// SET DUMB PIXEL FORMAT
-	if (!SetPixelFormat(dumb_device, dumb_format, &dumb_pixel_format)) { main_fail("Failed to set dumb pixel format."); }
+	if (!SetPixelFormat(dumb_device, dumb_format, &dumb_pixel_format)) { fail("Failed to set dumb pixel format."); }
 	// CREATE DUMB CONTEXT
 	HGLRC dumb_context = wglCreateContext(dumb_device);
-	if (!dumb_context) { main_fail("Failed to create dumb graphics context."); }
+	if (!dumb_context) { fail("Failed to create dumb graphics context."); }
 	// MAKE CURRENT DUMB CONTEXT
-	if (!wglMakeCurrent(dumb_device, dumb_context)) { main_fail("Failed make current dumb context."); }
+	if (!wglMakeCurrent(dumb_device, dumb_context)) { fail("Failed make current dumb context."); }
 
 	// 5. LOAD OPENGL FUNCTIONS
 
   // INIT
   wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
-  if (wglChoosePixelFormatARB == NULL) { main_fail("wglChoosePixelFormatARB load procedure failed."); }
+  if (wglChoosePixelFormatARB == NULL) { fail("wglChoosePixelFormatARB load procedure failed."); }
   wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-  if (wglCreateContextAttribsARB == NULL) { main_fail("wglCreateContextAttribsARB load procedure failed."); }
+  if (wglCreateContextAttribsARB == NULL) { fail("wglCreateContextAttribsARB load procedure failed."); }
 	// SHADER
   glCreateShader = (PFNGLCREATESHADERPROC)wglGetProcAddress("glCreateShader");
-  if (glCreateShader == NULL) { main_fail("CreateShader load procedure failed."); }
+  if (glCreateShader == NULL) { fail("CreateShader load procedure failed."); }
   glShaderSource = (PFNGLSHADERSOURCEPROC)wglGetProcAddress("glShaderSource");
-  if (glShaderSource == NULL) { main_fail("ShaderSource load procedure failed."); }
+  if (glShaderSource == NULL) { fail("ShaderSource load procedure failed."); }
   glCompileShader = (PFNGLCOMPILESHADERPROC)wglGetProcAddress("glCompileShader");
-  if (glCompileShader == NULL) { main_fail("CompileShader load procedure failed."); }
+  if (glCompileShader == NULL) { fail("CompileShader load procedure failed."); }
   glGetShaderiv = (PFNGLGETSHADERIVPROC)wglGetProcAddress("glGetShaderiv");
-  if (glGetShaderiv == NULL) { main_fail("GetShaderiv load procedure failed."); }
+  if (glGetShaderiv == NULL) { fail("GetShaderiv load procedure failed."); }
   glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)wglGetProcAddress("glGetShaderInfoLog");
-  if (glGetShaderInfoLog == NULL) { main_fail("GetShaderInfoLog load procedure failed."); }
+  if (glGetShaderInfoLog == NULL) { fail("GetShaderInfoLog load procedure failed."); }
 	// PROGRAM
   glCreateProgram = (PFNGLCREATEPROGRAMPROC)wglGetProcAddress("glCreateProgram");
-  if (glCreateProgram == NULL) { main_fail("CreateProgram load procedure failed."); }
+  if (glCreateProgram == NULL) { fail("CreateProgram load procedure failed."); }
   glAttachShader = (PFNGLATTACHSHADERPROC)wglGetProcAddress("glAttachShader");
-  if (glAttachShader == NULL) { main_fail("AttachShader load procedure failed."); }
+  if (glAttachShader == NULL) { fail("AttachShader load procedure failed."); }
   glLinkProgram = (PFNGLLINKPROGRAMPROC)wglGetProcAddress("glLinkProgram");
-  if (glLinkProgram == NULL) { main_fail("LinkProgram load procedure failed."); }
+  if (glLinkProgram == NULL) { fail("LinkProgram load procedure failed."); }
   glGetProgramiv = (PFNGLGETPROGRAMIVPROC)wglGetProcAddress("glGetProgramiv");
-  if (glGetProgramiv == NULL) { main_fail("glGetProgramiv load procedure failed."); }
+  if (glGetProgramiv == NULL) { fail("glGetProgramiv load procedure failed."); }
   glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)wglGetProcAddress("glGetProgramInfoLog");
-  if (glGetProgramInfoLog == NULL) { main_fail("glGetProgramInfoLog load procedure failed."); }
+  if (glGetProgramInfoLog == NULL) { fail("glGetProgramInfoLog load procedure failed."); }
   glDeleteShader = (PFNGLDELETESHADERPROC)wglGetProcAddress("glDeleteShader");
-  if (glDeleteShader == NULL) { main_fail("DeleteShader load procedure failed."); }
+  if (glDeleteShader == NULL) { fail("DeleteShader load procedure failed."); }
 	glUseProgram = (PFNGLUSEPROGRAMPROC)wglGetProcAddress("glUseProgram");
-  if (glUseProgram == NULL) { main_fail("UseProgram load procedure failed."); }
+  if (glUseProgram == NULL) { fail("UseProgram load procedure failed."); }
 	// BUFFER
   glGenBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glGenBuffers");
-  if (glGenBuffers == NULL) { main_fail("GenBuffers load procedure failed."); }
+  if (glGenBuffers == NULL) { fail("GenBuffers load procedure failed."); }
   glBindBuffer = (PFNGLBINDBUFFERPROC)wglGetProcAddress("glBindBuffer");
-  if (glBindBuffer == NULL) { main_fail("BindBuffer load procedure failed."); }
+  if (glBindBuffer == NULL) { fail("BindBuffer load procedure failed."); }
   glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
-  if (glDeleteBuffers == NULL) { main_fail("DeleteBuffers load procedure failed."); }
+  if (glDeleteBuffers == NULL) { fail("DeleteBuffers load procedure failed."); }
   glBufferData = (PFNGLBUFFERDATAPROC)wglGetProcAddress("glBufferData");
-  if (glBufferData == NULL) { main_fail("BufferData load procedure failed."); }
+  if (glBufferData == NULL) { fail("BufferData load procedure failed."); }
 	// VERTEX ARRAY
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
-  if (glGenVertexArrays == NULL) { main_fail("GenVertexArrays load procedure failed."); }
+  if (glGenVertexArrays == NULL) { fail("GenVertexArrays load procedure failed."); }
   glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glBindVertexArray");
-  if (glBindVertexArray == NULL) { main_fail("BindVertexArray load procedure failed."); }
+  if (glBindVertexArray == NULL) { fail("BindVertexArray load procedure failed."); }
   glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glDeleteVertexArrays");
-  if (glDeleteVertexArrays == NULL) { main_fail("DeleteVertexArrays load procedure failed."); }
+  if (glDeleteVertexArrays == NULL) { fail("DeleteVertexArrays load procedure failed."); }
 	// VERTEX ATTRIBUTES
 	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)wglGetProcAddress("glVertexAttribPointer");
-  if (glVertexAttribPointer == NULL) { main_fail("VertexAttribPointer load procedure failed."); }
+  if (glVertexAttribPointer == NULL) { fail("VertexAttribPointer load procedure failed."); }
   glEnableVertexAttribArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glEnableVertexAttribArray");
-  if (glEnableVertexAttribArray == NULL) { main_fail("EnableVertexAttribArray load procedure failed."); }
+  if (glEnableVertexAttribArray == NULL) { fail("EnableVertexAttribArray load procedure failed."); }
 	// DESTROY DUMB STUFF
 	wglMakeCurrent(dumb_device, 0);
 	wglDeleteContext(dumb_context);
@@ -314,7 +314,7 @@ int main() {
 	// 6. NICE PART
 
 	// SET NICE GRAPHICS FORMAT
-	int nice_pixel_format[] = {
+	INT nice_pixel_format[] = {
 		WGL_DRAW_TO_WINDOW_ARB,     GL_TRUE,
 		WGL_SUPPORT_OPENGL_ARB,     GL_TRUE,
 		WGL_DOUBLE_BUFFER_ARB,      GL_TRUE,
@@ -326,27 +326,27 @@ int main() {
 		0
 	};
 	UINT available_formats;
-	int nice_format;
+	INT nice_format;
 	// CHOOSE NICE PIXEL FORMAT
 	wglChoosePixelFormatARB(context, nice_pixel_format, 0, 1, &nice_format, &available_formats);
-	if (!available_formats) main_fail("Failed to choose nice graphics pixel format.");
+	if (!available_formats) { fail("Failed to choose nice graphics pixel format."); }
 	// DESCRIBE NICE PIXEL FORMAT
 	PIXELFORMATDESCRIPTOR format_description;
 	DescribePixelFormat(context, nice_format, sizeof(format_description), &format_description);
-	if (!SetPixelFormat(context, nice_format, &format_description)) main_fail("Failed to describe nice pixel format.");
-	// SET GRAPHICS ATTRIBUTES
-	int graphics_attributes[] = {
+	if (!SetPixelFormat(context, nice_format, &format_description)) { fail("Failed to describe nice pixel format."); }
+	// SET NICE GRAPHICS ATTRIBUTES
+	INT graphics_attributes[] = {
 		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
 		WGL_CONTEXT_PROFILE_MASK_ARB,
 		WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 		0,
 	};
-	// CREATE CONTEXT ATTRIBUTES
+	// CREATE NICE CONTEXT ATTRIBUTES
 	HGLRC graphics_context = wglCreateContextAttribsARB(context, 0, graphics_attributes);
-	if (!graphics_context) { main_fail("Failed to create graphics context."); }
+	if (!graphics_context) { fail("Failed to create graphics context."); }
 	// MAKE CURRENT NICE CONTEXT
-	if (!wglMakeCurrent(context, graphics_context)) main_fail("Failed to make current nice graphics context.");
+	if (!wglMakeCurrent(context, graphics_context)) { fail("Failed to make current nice graphics context."); }
 
 	// 7. OPENGL SETUP
 
@@ -380,7 +380,7 @@ int main() {
   if (!success) {
 		// WRITE VERTEX SHADER INFO LOG
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		main_fail("Failed to compile vertex shader.");
+		fail("Failed to compile vertex shader.");
   }
 	// CREATE FRAGMENT SHADER
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -394,7 +394,7 @@ int main() {
 	if (!success) {
 		// WRITE FRAGMENT SHADER INFO LOG
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		main_fail("Failed to compile fragment shader.");
+		fail("Failed to compile fragment shader.");
 	}
 	// CREATE PROGRAM
 	GLuint program = glCreateProgram();
@@ -410,7 +410,7 @@ int main() {
 	if (!success) {
 		// WRITE PROGRAM INFO LOG
 		glGetProgramInfoLog(program, 512, NULL, infoLog);
-		main_fail("Failed to link shader program.");
+		fail("Failed to link shader program.");
 	}
 	// DELETE SHADERS
 	glDeleteShader(vertexShader);
@@ -436,7 +436,7 @@ int main() {
 	// STORE BUFFER DATA
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	// SET VERTEX ATTRIBUTES
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 	// ENABLE VERTEX ATTRIBUTES
 	glEnableVertexAttribArray(0);
 	// UNBIND VERTEX ARRAY 
@@ -495,7 +495,7 @@ int main() {
 					// SET KEY NUMBER
 					keyboard_key = mail.wParam;
 					// IF KEY IS ESC, CLOSE WINDOW 
-					if (keyboard_key == 27) main_fail("PRESS 27 (QUIT)");
+					if (keyboard_key == 27) fail("PRESS 27 (QUIT)");
 					// ELSE PRINT KEY NUMBER
 					else printf("PRESS %i\n", keyboard_key);
 					break;
