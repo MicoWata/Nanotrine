@@ -1,4 +1,4 @@
-# Hello triangle in C, using bare win32 and OpenGL
+# Hello triangle in C, win32 & OpenGL
 
 This project is about :
 * creating a win32 window with an opengl 3.3 context to draw a triangle in minimal, easy to read, plain C.
