@@ -1,5 +1,3 @@
-// NANOTRINE
-
 // STANDARD C & WINDOWS HEADERS
 #include <stdio.h>
 #include <stdbool.h>
@@ -139,7 +137,7 @@ int frame = 0;
 void fail(char failure[])
 {
   Quit = true;
-	printf(failure);
+	printf("%s", failure);
 }
 
 // 2. WINDOW PROCEDURE
@@ -174,35 +172,9 @@ LRESULT window_procedure(HWND window, UINT message, WPARAM wparam, LPARAM lparam
 // MAIN ENTRY POINT
 int main() {
 
-	// 3. CREATE WINDOW AND PROGRAM HANDLES
-
-	// GET MODULE HANDLE
+	// 3. GET MODULE HANDLE
 	HINSTANCE instance = GetModuleHandle(0);
-	// REGISTER NICE WINDOW CLASS
-	WNDCLASSA window_class = {
-		.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
-		.lpfnWndProc = window_procedure,
-		.hInstance = instance,
-		.hCursor = LoadCursor(0, IDC_ARROW),
-		.lpszClassName = "nice_class",
-	};
-	if (!RegisterClass(&window_class)) fail("Failed to register nice window.");
-	// CREATE NICE WINDOW
-	HWND window = CreateWindowEx(
-		0,
-		window_class.lpszClassName,
-		"Window Title",
-		WS_OVERLAPPEDWINDOW,
-		10, 10,
-		1024, 720,
-		0, 0,
-		instance,
-		0
-	);
-	if (!window) fail("Failed to create nice window.");
-	// GET NICE DEVICE CONTEXT
-	HDC context = GetDC(window);
-
+	
 	// 4. DUMB PART
 
 	// REGISTER DUMB WINDOW CLASS
@@ -313,6 +285,30 @@ int main() {
 
 	// 6. NICE PART
 
+	// REGISTER NICE WINDOW CLASS
+	WNDCLASSA window_class = {
+		.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
+		.lpfnWndProc = window_procedure,
+		.hInstance = instance,
+		.hCursor = LoadCursor(0, IDC_ARROW),
+		.lpszClassName = "nice_class",
+	};
+	if (!RegisterClassA(&window_class)) fail("Failed to register nice window.");
+	// CREATE NICE WINDOW
+	HWND window = CreateWindowExA(
+		0,
+		window_class.lpszClassName,
+		"Window Title",
+		WS_OVERLAPPEDWINDOW,
+		10, 10,
+		1024, 720,
+		0, 0,
+		instance,
+		0
+	);
+	if (!window) fail("Failed to create nice window.");
+	// GET NICE DEVICE CONTEXT
+	HDC context = GetDC(window);
 	// SET NICE GRAPHICS FORMAT
 	INT nice_pixel_format[] = {
 		WGL_DRAW_TO_WINDOW_ARB,     GL_TRUE,
@@ -335,7 +331,7 @@ int main() {
 	DescribePixelFormat(context, nice_format, sizeof(format_description), &format_description);
 	if (!SetPixelFormat(context, nice_format, &format_description)) { fail("Failed to describe nice pixel format."); }
 	// SET NICE GRAPHICS ATTRIBUTES
-	INT graphics_attributes[] = {
+	int graphics_attributes[] = {
 		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
 		WGL_CONTEXT_PROFILE_MASK_ARB,
