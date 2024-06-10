@@ -16,7 +16,6 @@ Included files :
 Requirements :
 * A Windows operating system, like Windows 10 or 11.
 * Any C compiler, but GCC is required to use the included run file.
-* Experience in at least another typed programming language.
 
 Links :
 * [Download GCC](https://sourceforge.net/projects/mingw-w64/)
