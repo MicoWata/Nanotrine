@@ -18,9 +18,9 @@ Requirements :
 * Any C compiler, but GCC is required to use the included run file.
 
 Links :
-* [Download GCC](https://sourceforge.net/projects/mingw-w64/)
-* [Khronos wiki for creating an OpenGl context in win32](https://www.khronos.org/opengl/wiki/Creating_an_OpenGL_Context_(WGL))
 * [Learn opengl](https://learnopengl.com/Getting-started/Hello-Triangle)
+* [Khronos wiki for creating an OpenGl context in win32](https://www.khronos.org/opengl/wiki/Creating_an_OpenGL_Context_(WGL))
+* [Download GCC](https://sourceforge.net/projects/mingw-w64/)
 
 References
 * [Triangle from scratch in Rust](https://rust-tutorials.github.io/triangle-from-scratch/)
